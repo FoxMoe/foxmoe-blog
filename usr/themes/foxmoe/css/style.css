@@ -1,0 +1,15 @@
+/* Foxmoe Theme - Modular CSS Aggregator
+   This file is intentionally small to avoid editor lag. 
+   Main styles are split into modules below.
+*/
+
+@import url('./core.css');      /* 变量、基础、重置与滚动条 */
+@import url('./layout.css');    /* 头部、导航、搜索、布局、页脚、Hero 等 */
+@import url('./cards.css');     /* 列表、卡片、详情、导航、评论等 */
+
+/* 说明：
+   - 组件细节仍在 components.css
+   - 主题皮肤在 theme.css
+   - 评论样式在 comments.css
+   - 全局覆盖与状态在 utilities.css（在 header.php 单独引入，位于末尾以确保覆盖）
+*/

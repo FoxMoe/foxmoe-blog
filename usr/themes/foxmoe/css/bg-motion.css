@@ -1,0 +1,79 @@
+/* 背景移动 */
+
+:root {
+  --ps-tile-size: 160px;           /* 图案平铺单元尺寸（元素互不重叠） */
+  --ps-scroll-speed: 30s;          /* 放慢周期，让移动更顺滑 */
+  --cursor-dot-size: 50px;         /* 鼠标圆点直径 */
+  --cursor-x: -9999px;             /* 初始隐藏 */
+  --cursor-y: -9999px;             /* 初始隐藏 */
+}
+
+body { position: relative; z-index: 0; }
+
+/* 日间：深灰（非纯黑）; 暗色：浅灰 */
+body::before {
+  content: '';
+  position: fixed;
+  /* 用四边定位并向外扩一圈平铺单元 */
+  top: calc(-1 * var(--ps-tile-size));
+  right: calc(-1 * var(--ps-tile-size));
+  bottom: calc(-1 * var(--ps-tile-size));
+  left: calc(-1 * var(--ps-tile-size));
+  z-index: -2; 
+  pointer-events: none;
+  opacity: 0.2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23222222' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='40' cy='40' r='22'/%3E%3Cpath d='M120 20 L140 56 L100 56 Z'/%3E%3Cpath d='M28 112 L52 136 M52 112 L28 136'/%3E%3Crect x='100' y='104' width='36' height='36' rx='5' ry='5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: var(--ps-tile-size) var(--ps-tile-size);
+  background-repeat: repeat;
+  /* 初始位置固定，改用 transform 做平移，避免 repaint 抖动 */
+  background-position: 0 0;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  animation: ps-bg-pan var(--ps-scroll-speed) linear infinite !important;
+  animation-play-state: running !important;
+}
+
+.dark-theme body::before,
+[data-theme="dark"] body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23cfcfcf' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='40' cy='40' r='22'/%3E%3Cpath d='M120 20 L140 56 L100 56 Z'/%3E%3Cpath d='M28 112 L52 136 M52 112 L28 136'/%3E%3Crect x='100' y='104' width='36' height='36' rx='5' ry='5'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.14;
+}
+
+@keyframes ps-bg-pan {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-160px, -160px, 0); }
+}
+
+/* 即使用户开启“减少动态效果”，也保持缓慢移动，避免被全局 0.01ms 规则覆盖 */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: ps-bg-pan calc(var(--ps-scroll-speed) * 1.5) linear infinite !important;
+    animation-iteration-count: infinite !important;
+    animation-play-state: running !important;
+  }
+}
+
+/* 背景层鼠标圆点 -> 改为实体元素 #cursor-dot（性能更佳） */
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--cursor-dot-size);
+  height: var(--cursor-dot-size);
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.16); /* 日间：偏暗 */
+  transform: translate3d(-9999px, -9999px, 0);
+  z-index: -1; /* 位于内容下方，但高于 body::before(-2) */
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dark-theme #cursor-dot,
+[data-theme="dark"] #cursor-dot {
+  background-color: rgba(255, 255, 255, 0.24); /* 暗黑：更亮的灰 */
+}
+
+/* 移动端禁用鼠标圆点（触摸设备/无悬停设备） */
+@media (pointer: coarse), (hover: none) {
+  #cursor-dot { display: none !important; }
+}
+

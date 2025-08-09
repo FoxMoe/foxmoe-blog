@@ -1,0 +1,524 @@
+/* ============================
+   评论区域样式 - 美化版本
+   ============================ */
+
+.comments-container {
+  max-width: 100%;
+}
+
+/* 评论头部 */
+.comments-header {
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comments-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.comments-title .material-icons {
+  color: var(--primary-500);
+  font-size: 24px;
+}
+
+/* 评论列表 */
+.comments-list {
+  margin-bottom: var(--space-1);
+}
+
+/* 评论列表结构美化 */
+.comments-list ol,
+.comments-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comments-list li {
+  margin-bottom: var(--space-4);
+}
+
+.comments-list .comment-body {
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.comments-list .comment-body:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--primary-300);
+}
+
+/* 评论作者信息 */
+.comments-list .comment-author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.comments-list .comment-author .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.comments-list .comment-author cite {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--primary-600);
+  text-decoration: none;
+}
+
+.comments-list .comment-author cite:hover {
+  color: var(--primary-700);
+}
+
+/* 评论元信息 */
+.comments-list .comment-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.comments-list .comment-meta a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.comments-list .comment-meta a:hover {
+  color: var(--primary-600);
+}
+
+.comments-list .comment-date::before {
+  content: '🕒';
+  margin-right: var(--space-1);
+}
+
+/* 评论内容 */
+.comments-list .comment-content {
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.comments-list .comment-content p {
+  margin-bottom: var(--space-2);
+}
+
+.comments-list .comment-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 评论回复按钮 */
+.comments-list .comment-reply {
+  text-align: right;
+}
+
+.comments-list .comment-reply a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: var(--primary-50);
+  color: var(--primary-600);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.comments-list .comment-reply a:hover {
+  background: var(--primary-500);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.comments-list .comment-reply a::before {
+  content: '↩️';
+  margin-right: var(--space-1);
+}
+
+/* 子评论（回复）样式 */
+.comments-list .comment-children {
+  margin-top: var(--space-4);
+  margin-left: var(--space-6);
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--primary-200);
+}
+
+.comments-list .comment-children .comment-body {
+  background: var(--surface-color);
+  border-color: var(--primary-200);
+}
+
+.comments-list .comment-children .comment-body:hover {
+  border-color: var(--primary-400);
+}
+
+/* 评论级别指示 */
+.comments-list .comment-level-1 .comment-body {
+  border-left: 4px solid var(--primary-500);
+}
+
+.comments-list .comment-level-2 .comment-body {
+  border-left: 4px solid var(--primary-400);
+}
+
+.comments-list .comment-level-3 .comment-body {
+  border-left: 4px solid var(--primary-300);
+}
+
+/* 评论状态标识 */
+.comments-list .comment-by-author .comment-body {
+  background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+  border-color: var(--primary-400);
+}
+
+.comments-list .comment-by-author .comment-author cite::after {
+  content: '👑';
+  margin-left: var(--space-1);
+  font-size: 14px;
+}
+
+/* 评论分页 */
+.comments-pagination {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
+.comments-pagination a,
+.comments-pagination span {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.comments-pagination a:hover {
+  background: var(--primary-500);
+  color: white;
+  border-color: var(--primary-500);
+}
+
+.comments-pagination .current {
+  background: var(--primary-500);
+  color: white;
+  border-color: var(--primary-500);
+}
+
+/* 评论表单容器 */
+.comment-form-container {
+  background: var(--surface-color);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  border: 1px solid var(--border-color);
+}
+
+/* 评论表单头部 */
+.comment-form-header {
+  margin-bottom: var(--space-1);
+  text-align: left;
+}
+
+.comment-form-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.comment-form-title .material-icons {
+  color: var(--primary-500);
+  font-size: 24px;
+}
+
+.comment-form-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+/* 已登录用户信息 */
+.logged-in-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-avatar .material-icons {
+  font-size: 28px;
+  color: var(--primary-600);
+}
+
+.user-details {
+  flex: 1;
+}
+
+.welcome-text {
+  margin: 0 0 var(--space-1) 0;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.user-name {
+  color: var(--primary-600);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.user-name:hover {
+  color: var(--primary-700);
+}
+
+.logout-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
+}
+
+.logout-link:hover {
+  color: var(--primary-600);
+}
+
+.logout-link .material-icons {
+  font-size: 16px;
+}
+
+/* 表单行和组 */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.comment-text-group {
+  margin-bottom: var(--space-1);
+}
+
+/* 表单标签 */
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.form-label .material-icons {
+  font-size: 18px;
+  color: var(--primary-500);
+}
+
+/* 表单输入框 */
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-family: var(--font-sans);
+  background: var(--card-color);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* 提交按钮 */
+.form-actions {
+  text-align: right;
+}
+
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: var(--cursor-pointer);
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.2);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(236, 72, 153, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn .material-icons {
+  font-size: 18px;
+}
+
+/* 评论关闭状态 */
+.comments-closed {
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--text-secondary);
+}
+
+.comments-closed .material-icons {
+  font-size: 48px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.comments-closed h3 {
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.comments-closed p {
+  margin: 0;
+  font-size: var(--font-size-base);
+}
+
+/* 取消回复按钮 */
+.cancel-comment-reply {
+  margin-bottom: var(--space-4);
+}
+
+.cancel-comment-reply a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: var(--surface-color);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.cancel-comment-reply a:hover {
+  background: var(--primary-50);
+  color: var(--primary-600);
+  border-color: var(--primary-300);
+}
+
+/* 深色主题适配 */
+.dark-theme .comments-list .comment-body {
+  background: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .comments-list .comment-body:hover {
+  border-color: var(--primary-400);
+}
+
+.dark-theme .comments-list .comment-children .comment-body {
+  background: var(--card-color);
+}
+
+.dark-theme .comments-list .comment-by-author .comment-body {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(236, 72, 153, 0.2));
+  border-color: var(--primary-500);
+}
+
+.dark-theme .comments-list .comment-reply a {
+  background: rgba(236, 72, 153, 0.1);
+  color: var(--primary-400);
+}
+
+.dark-theme .comments-list .comment-reply a:hover {
+  background: var(--primary-500);
+  color: white;
+}
+
+.dark-theme .comment-form-container {
+  background: var(--surface-color);
+}
+
+.dark-theme .logged-in-info {
+  background: var(--card-color);
+}
+
+.dark-theme .form-input,
+.dark-theme .form-textarea {
+  background: var(--card-color);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .form-input:focus,
+.dark-theme .form-textarea:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+}
