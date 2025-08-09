@@ -8,7 +8,6 @@ use Typecho\Db\Exception;
 use Typecho\Validate;
 use Utils\PasswordHash;
 use Widget\Base\Users;
-use Widget\Users\EditTrait;
 
 if (!defined('__TYPECHO_ROOT_DIR__')) {
     exit;
@@ -23,8 +22,6 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
  */
 class Register extends Users implements ActionInterface
 {
-    use EditTrait;
-
     /**
      * 初始化函数
      *
@@ -63,8 +60,8 @@ class Register extends Users implements ActionInterface
 
         /** 截获验证异常 */
         if ($error = $validator->run($this->request->from('name', 'password', 'mail', 'confirm'))) {
-            Cookie::set('__typecho_remember_name', $this->request->get('name'));
-            Cookie::set('__typecho_remember_mail', $this->request->get('mail'));
+            Cookie::set('__typecho_remember_name', $this->request->name);
+            Cookie::set('__typecho_remember_mail', $this->request->mail);
 
             /** 设置提示信息 */
             Notice::alloc()->set($error);
@@ -72,39 +69,37 @@ class Register extends Users implements ActionInterface
         }
 
         $hasher = new PasswordHash(8, true);
-        $generatedPassword = Common::randString(7);
-
+        // 新增: 支持用户自定义密码
+        $rawPassword = $this->request->password ? $this->request->password : Common::randString(7);
         $dataStruct = [
-            'name' => $this->request->get('name'),
-            'mail' => $this->request->get('mail'),
-            'screenName' => $this->request->get('name'),
-            'password' => $hasher->hashPassword($generatedPassword),
+            'name' => $this->request->name,
+            'mail' => $this->request->mail,
+            'screenName' => $this->request->name,
+            'password' => $hasher->hashPassword($rawPassword),
             'created' => $this->options->time,
             'group' => 'subscriber'
         ];
 
-        $dataStruct = self::pluginHandle()->filter('register', $dataStruct);
+        $dataStruct = self::pluginHandle()->register($dataStruct);
 
         $insertId = $this->insert($dataStruct);
         $this->db->fetchRow($this->select()->where('uid = ?', $insertId)
             ->limit(1), [$this, 'push']);
 
-        self::pluginHandle()->call('finishRegister', $this);
+        self::pluginHandle()->finishRegister($this);
 
-        $this->user->login($this->request->get('name'), $generatedPassword);
+        $this->user->login($this->request->name, $rawPassword);
 
         Cookie::delete('__typecho_first_run');
         Cookie::delete('__typecho_remember_name');
         Cookie::delete('__typecho_remember_mail');
 
-        Notice::alloc()->set(
-            _t(
-                '用户 <strong>%s</strong> 已经成功注册, 密码为 <strong>%s</strong>',
-                $this->screenName,
-                $generatedPassword
-            ),
-            'success'
-        );
+        // 根据是否用户自设密码显示不同提示
+        if ($this->request->password) {
+            Notice::alloc()->set(_t('用户 <strong>%s</strong> 已成功注册', $this->screenName), 'success');
+        } else {
+            Notice::alloc()->set(_t('用户 <strong>%s</strong> 已成功注册, 密码为 <strong>%s</strong>', $this->screenName, $rawPassword), 'success');
+        }
         $this->response->redirect($this->options->adminUrl);
     }
 }

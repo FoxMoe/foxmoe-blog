@@ -1,0 +1,65 @@
+/* Foxmoe Auth Shared Styles (Login & Register) */
+.foxmoe-login-layout { display:flex; min-height:100vh; width:100%; background:#1e2228; }
+.foxmoe-login-hero { flex:1.2; position:relative; overflow:hidden; display:none; }
+.foxmoe-login-hero picture, .foxmoe-login-hero img, .foxmoe-login-hero source { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; filter:brightness(.85) contrast(1.1); transition: opacity .8s ease; }
+.foxmoe-login-hero img { opacity:0; }
+.foxmoe-login-hero img.loaded { opacity:1; }
+.foxmoe-login-overlay { position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,0,0,.45),rgba(0,0,0,.25)); display:flex; flex-direction:column; justify-content:flex-end; padding:44px clamp(20px,4vw,56px); color:#fff; backdrop-filter:blur(2px); }
+.foxmoe-login-overlay h1 { margin:0 0 10px; font-size: clamp(1.6rem,2.6vw,2.6rem); font-weight:800; letter-spacing:-.02em; }
+.foxmoe-login-overlay p { margin:0; font-size: clamp(.85rem,1.1vw,1rem); opacity:.85; }
+/* Panel */
+.foxmoe-login-panel { flex:0 0 360px; max-width:250px; display:flex; flex-direction:column; justify-content:center; padding: clamp(28px,5vw,52px) clamp(26px,4vw,48px); background:#ffffff; box-shadow:0 8px 24px -6px rgba(15,23,42,.07), 0 2px 6px rgba(0,0,0,.05); position:relative; z-index:2; }
+@media (max-width:480px){ .foxmoe-login-panel { flex:1 1 auto; max-width:100%; padding:32px 24px; } }
+/* Header */
+.foxmoe-login-header { margin:0 0 26px; }
+.foxmoe-login-header .title { margin:0; font-size:1.55rem; font-weight:700; letter-spacing:-.5px; color:#1e293b; }
+.foxmoe-login-header .subtitle { margin:6px 0 0; font-size:.9rem; color:#64748b; }
+/* Form Fields */
+.foxmoe-login-panel form { display:flex; flex-direction:column; gap:16px; }
+.foxmoe-field { display:flex; flex-direction:column; gap:5px; text-align:left; }
+.foxmoe-field label { font-size:.75rem; font-weight:600; letter-spacing:.5px; text-transform:uppercase; color:#64748b; }
+.foxmoe-field input[type=text], .foxmoe-field input[type=password], .foxmoe-field input[type=email] { padding:12px 14px; border:1px solid #e2e8f0; border-radius:5px; font-size:.9rem; background:#fff; transition:border .25s, box-shadow .25s, background .25s; color:#000 !important; }
+.foxmoe-field input:focus { outline:none; border-color:#ec4899; box-shadow:0 0 0 2px rgba(236,72,153,.25); }
+/* Actions / Button */
+.foxmoe-actions { display:flex; flex-direction:column; gap:16px; }
+.foxmoe-login-btn { padding:13px 16px; border:none; border-radius:5px; background:linear-gradient(135deg,#ec4899,#f472b6); color:#fff; font-weight:600; font-size:.95rem; letter-spacing:.5px; cursor:pointer; box-shadow:0 6px 18px -5px rgba(236,72,153,.5),0 2px 8px rgba(0,0,0,.1); transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s; }
+.foxmoe-login-btn:hover { transform:translateY(-2px); box-shadow:0 10px 26px -6px rgba(236,72,153,.55),0 4px 14px rgba(0,0,0,.14); }
+.foxmoe-login-btn:active { transform:translateY(0); }
+/* Remember Checkbox */
+.foxmoe-remember { display:flex; align-items:center; gap:6px; font-size:.75rem; color:#64748b; }
+.foxmoe-remember input[type=checkbox] { width:15px; height:15px; border:1px solid #cbd5e1; border-radius:4px; appearance:none; display:grid; place-items:center; background:#fff; cursor:pointer; transition:background .25s,border-color .25s; }
+.foxmoe-remember input[type=checkbox]:hover { border-color:#ec4899; }
+.foxmoe-remember input[type=checkbox]:checked { background:#ec4899; border-color:#cbd5e1; }
+.foxmoe-remember input[type=checkbox]:checked:after { content:none; }
+/* Footer links */
+.foxmoe-more { margin-top:28px; font-size:.75rem; color:#64748b; }
+.foxmoe-more a { color:#ec4899; text-decoration:none; font-weight:500; }
+.foxmoe-more a:hover { text-decoration:underline; }
+/* Responsive hero visibility */
+@media (max-width: 900px){ .foxmoe-login-hero { display:none; } .foxmoe-login-panel { flex:1; } }
+@media (min-width: 901px){ .foxmoe-login-hero { display:block; } }
+/* Small screen full width */
+@media (max-width: 900px){
+  .foxmoe-login-layout{ background:#fff; }
+  body.body-100 { background:#fff; }
+  .foxmoe-login-panel{ flex:1 1 auto; width:100%; max-width:100%; min-height:100vh; box-shadow:none; border-radius:0; padding:40px 28px; }
+  .foxmoe-login-header .title { font-size:1.75rem; }
+}
+/* Dark mode */
+@media (prefers-color-scheme: dark){
+  body.body-100 { background:#0f1115; }
+  .foxmoe-login-panel { background:#1e2228; color:#e2e8f0; }
+  .foxmoe-login-hero picture, .foxmoe-login-hero img { filter:brightness(.75) contrast(1.15); }
+  .foxmoe-login-header .title { color:#f1f5f9; }
+  .foxmoe-login-header .subtitle { color:#94a3b8; }
+  .foxmoe-field input { background:#11161d; border-color:#2a3038; color:#e2e8f0; }
+  .foxmoe-field input:focus { border-color:#ec4899; box-shadow:0 0 0 2px rgba(236,72,153,.35); }
+  .foxmoe-field label { color:#94a3b8; }
+  .foxmoe-remember input[type=checkbox]{ background:#11161d; border-color:#2a3038; }
+  .foxmoe-remember input[type=checkbox]:checked { background:#ec4899; border-color:#ec4899; }
+}
+@media (max-width:900px) and (prefers-color-scheme: dark){
+  .foxmoe-login-layout{ background:#1e2228; }
+  body.body-100 { background:#1e2228; }
+  .foxmoe-login-panel{ background:#1e2228; }
+}

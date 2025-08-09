@@ -19,28 +19,28 @@ class Plugin
      *
      * @var array
      */
-    private static array $plugin = [];
+    private static $plugin = [];
 
     /**
      * 实例化的插件对象
      *
      * @var array
      */
-    private static array $instances;
+    private static $instances;
 
     /**
      * 临时存储变量
      *
      * @var array
      */
-    private static array $tmp = [];
+    private static $tmp = [];
 
     /**
      * 唯一句柄
      *
      * @var string
      */
-    private string $handle;
+    private $handle;
 
     /**
      * 组件
@@ -54,7 +54,7 @@ class Plugin
      *
      * @var boolean
      */
-    private bool $signal = false;
+    private $signal;
 
     /**
      * 插件初始化
@@ -207,7 +207,7 @@ class Plugin
 
                 /** 分行读取 */
                 $described = false;
-                $lines = preg_split("([\r\n])", $token[1]);
+                $lines = preg_split("(\r|\n)", $token[1]);
                 foreach ($lines as $line) {
                     $line = trim($line);
                     if (!empty($line) && '*' == $line[0]) {
@@ -352,9 +352,9 @@ class Plugin
      * 判断插件是否存在
      *
      * @param string $pluginName 插件名称
-     * @return bool
+     * @return mixed
      */
-    public static function exists(string $pluginName): bool
+    public static function exists(string $pluginName)
     {
         return array_key_exists($pluginName, self::$plugin['activated']);
     }
@@ -433,59 +433,20 @@ class Plugin
      * @param array $args 参数
      * @return mixed
      */
-    public function call(string $component, ...$args)
-    {
-        $componentKey = $this->handle . ':' . $component;
-
-        if (!isset(self::$plugin['handles'][$componentKey])) {
-            return null;
-        }
-
-        $return = null;
-        $this->signal = true;
-
-        foreach (self::$plugin['handles'][$componentKey] as $callback) {
-            $return = call_user_func_array($callback, $args);
-        }
-
-        return $return;
-    }
-
-    /**
-     * 过滤处理函数
-     *
-     * @param string $component 当前组件
-     * @param mixed $value 值
-     * @param array $args 参数
-     * @return mixed
-     */
-    public function filter(string $component, $value, ...$args)
-    {
-        $componentKey = $this->handle . ':' . $component;
-
-        if (!isset(self::$plugin['handles'][$componentKey])) {
-            return $value;
-        }
-
-        $result = $value;
-        $this->signal = true;
-
-        foreach (self::$plugin['handles'][$componentKey] as $callback) {
-            $currentArgs = array_merge([$result], $args, [$result]);
-            $result = call_user_func_array($callback, $currentArgs);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @deprecated ^1.3.0
-     * @param string $component
-     * @param array $args
-     * @return false|mixed|null
-     */
     public function __call(string $component, array $args)
     {
-        return $this->call($component, ... $args);
+        $component = $this->handle . ':' . $component;
+        $last = count($args);
+        $args[$last] = $last > 0 ? $args[0] : false;
+
+        if (isset(self::$plugin['handles'][$component])) {
+            $args[$last] = null;
+            $this->signal = true;
+            foreach (self::$plugin['handles'][$component] as $callback) {
+                $args[$last] = call_user_func_array($callback, $args);
+            }
+        }
+
+        return $args[$last];
     }
 }

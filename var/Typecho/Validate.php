@@ -15,7 +15,7 @@ class Validate
      * @access private
      * @var array
      */
-    private array $data;
+    private $data;
 
     /**
      * 当前验证指针
@@ -23,7 +23,7 @@ class Validate
      * @access private
      * @var string
      */
-    private string $key;
+    private $key;
 
     /**
      * 验证规则数组
@@ -31,7 +31,7 @@ class Validate
      * @access private
      * @var array
      */
-    private array $rules = [];
+    private $rules = [];
 
     /**
      * 中断模式,一旦出现验证错误即抛出而不再继续执行
@@ -39,7 +39,7 @@ class Validate
      * @access private
      * @var boolean
      */
-    private bool $break = false;
+    private $break = false;
 
     /**
      * 最小长度
@@ -120,7 +120,7 @@ class Validate
      *
      * @access public
      *
-     * @param string $str
+     * @param string
      *
      * @return boolean
      */
@@ -134,7 +134,7 @@ class Validate
      *
      * @access public
      *
-     * @param string $str
+     * @param string
      *
      * @return boolean
      */
@@ -148,7 +148,7 @@ class Validate
      *
      * @access public
      *
-     * @param string $str
+     * @param string
      *
      * @return boolean
      */
@@ -215,18 +215,6 @@ class Validate
     }
 
     /**
-     * 正则表达式验证
-     *
-     * @param string $str
-     * @param string $pattern
-     * @return bool
-     */
-    public static function regexp(string $str, string $pattern): bool
-    {
-        return preg_match($pattern, $str) === 1;
-    }
-
-    /**
      * 增加验证规则
      *
      * @access public
@@ -272,7 +260,7 @@ class Validate
      *
      * @return    array
      */
-    public function run(array $data, ?array $rules = null): array
+    public function run(array $data, array $rules = null): array
     {
         $result = [];
         $this->data = $data;
@@ -334,8 +322,6 @@ class Validate
      */
     public function required(): bool
     {
-        return array_key_exists($this->key, $this->data) &&
-            (is_array($this->data[$this->key]) ? 0 < count($this->data[$this->key])
-                : 0 < strlen($this->data[$this->key] ?? ''));
+        return !empty($this->data[$this->key]);
     }
 }
