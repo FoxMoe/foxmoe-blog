@@ -4,7 +4,7 @@
  *
  * @package Foxmoe
  * @author Foxmoe TOP
- * @version 1.1
+ * @version 1.2
  * @link https://foxmoe.top
  */
 
@@ -71,7 +71,7 @@ $this->need('header.php');
                         <div class="post-image-wrapper">
                             <?php if ($this->fields->thumbnail): ?>
                                 <div class="post-image">
-                                <?php $prefix = foxmoe_opt('githubImageProxy', 'https://get.2sb.org/'); ?>
+                                <?php $prefix = foxmoe_opt('githubImageProxy', ''); ?>
                                 <img src="<?php echo $prefix . ltrim($this->fields->thumbnail, '/'); ?>" alt="<?php $this->title(); ?>" class="post-img">
                             <?php else: ?>
                                 <div class="post-noimage">
@@ -81,7 +81,7 @@ $this->need('header.php');
                         </div>
                         <div class="post-content">
                             <h3 class="post-title"><a href="<?php $this->permalink(); ?>" class="post-title-link"><?php $this->title(); ?></a></h3>
-                            <p class="post-excerpt"><?php echo mb_substr(strip_tags($this->excerpt), 0, 120, 'UTF-8') . '...'; ?></p>
+                            <p class="post-excerpt"><?php echo mb_substr(strip_tags($this->markdown($this->excerpt)), 0, 120, 'UTF-8') . '...'; ?></p>
                             <div class="post-meta">
                                 <div class="post-author">
                                     <img src="<?php $this->options->themeUrl('image/logo/640.png'); ?>" alt="<?php $this->author(); ?>" class="author-avatar">
@@ -99,7 +99,7 @@ $this->need('header.php');
                     <?php endwhile; ?>
                 </div>
                 <div class="page-nav">
-                    <?php $this->pageNav('&laquo; 前一页', '后一页 &raquo;'); ?>
+                    <?php $this->pageNav('&laquo; 上一页', '下一页 &raquo;'); ?>
                 </div>
             </section>
         </div>
@@ -107,16 +107,3 @@ $this->need('header.php');
     </div>
 </main>
 <?php $this->need('footer.php'); ?>
-<script>
-(function(){
-  // 代理整卡点击, 避免覆盖内部链接
-  document.addEventListener('click', function(e){
-    var card = e.target.closest('.post-card');
-    if(!card) return;
-    // 如果点击的是内部链接则不拦截
-    if(e.target.closest('a')) return;
-    var url = card.getAttribute('data-url');
-    if(url){ window.location.href = url; }
-  });
-})();
-</script>

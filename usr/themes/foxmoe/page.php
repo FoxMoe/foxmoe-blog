@@ -19,7 +19,7 @@
                 </header>
 
                 <!-- 页面内容 -->
-                <div class="page-content" itemprop="articleBody">
+                <div id="content" class="page-content" itemprop="articleBody">
                     <?php $this->content(); ?>
                 </div>
             </article>

@@ -23,7 +23,7 @@
 .post-homepage { color:var(--text-primary); font-size: var(--font-size-base); font-weight: 500; text-decoration: underline; transition: color 0.3s ease; }
 .post-homepage:hover { color: var(--primary-600); text-decoration: underline; }
 .post-content { padding: var(--space-2) var(--space-4) var(--space-4) var(--space-4); border-radius: 0 0 var(--radius-xl) var(--radius-xl); }
-.post-title { font-size: var(--font-size-xl); font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-1); line-height: 1; transition: color 0.3s ease; }
+.post-title { font-size: var(--font-size-xl); font-weight: 600; color: var(--text-primary); margin: var(--space-2) 0 var(--space-2) 0 !important; line-height: 1; transition: color 0.3s ease; }
 .post-card:hover .post-title { color: var(--primary-600); }
 .post-excerpt { color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-1); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; -webkit-line-clamp: 3; line-clamp: 3; }
 
@@ -60,16 +60,16 @@
 /* 文章内容元素 */
 .post-content, .page-content { line-height: 1.8; color: var(--text-primary); font-size: var(--font-size-base); }
 .post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6,
-.page-content h1, .page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6 { margin: var(--space-1) 0 var(--space-2) 0; color: var(--text-primary); font-weight: 600; }
-.post-content h1, .page-content h1 { font-size: var(--font-size-2xl); }
-.post-content h2, .page-content h2 { font-size: var(--font-size-xl); }
-.post-content h3, .page-content h3 { font-size: var(--font-size-lg); }
+.page-content h1, .page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6 { margin: var(--space-6) 0 var(--space-2) 0; color: var(--text-primary); font-weight: 600; }
+.post-content h1, .page-content h1 { font-size: var(--font-size-3xl); }
+.post-content h2, .page-content h2 { font-size: var(--font-size-2xl); }
+.post-content h3, .page-content h3 { font-size: var(--font-size-xl); }
 .post-content p, .page-content p { margin-bottom: var(--space-1); }
 .post-content img, .page-content img { max-width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 .post-content blockquote, .page-content blockquote { border-left: 4px solid var(--primary-500); background: var(--surface-color); margin: var(--space-6) 0; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; font-style: italic; color: var(--text-secondary); }
 .post-content code, .page-content code { background: var(--surface-color); border-radius: var(--radius-sm); font-family: 'Monaco', 'Consolas', monospace; font-size: 0.9em; color: var(--primary-700); }
 .post-content pre, .page-content pre { background: var(--surface-color); border-radius: var(--radius-lg); overflow-x: auto; margin: var(--space-6) 0; border: 1px solid var(--border-color); }
-.post-content pre code, .page-content pre code { background: none; padding: 0; color: var(--text-primary); }
+.post-content pre code, .page-content pre code { background: none; padding: 0; color: var(--primary-500); }
 .post-content ul, .post-content ol, .page-content ul, .page-content ol { margin: var(--space-4) 0; padding-left: var(--space-6); }
 .post-content li, .page-content li { margin-bottom: var(--space-2); }
 

@@ -168,6 +168,57 @@ function get_post_view($archive) {
 }
 
 /**
+ * 更新并获取文章阅读量
+ * @param object $archive 当前文章对象
+ */
+function get_and_update_post_view($archive) {
+    if (!$archive->is('single')) {
+        // 如果不是文章页面，直接尝试输出字段，不存在则为0
+        echo ($archive->fields->views ? $archive->fields->views : '0');
+        return;
+    }
+
+    $cid = $archive->cid;
+    $db = Typecho_Db::get();
+    
+    // 检查 'views' 字段是否存在
+    $row = $db->fetchRow($db->select('int_value')->from('table.fields')->where('cid = ? AND name = ?', $cid, 'views'));
+
+    // 检查cookie，防止重复计数
+    $viewed_cids = isset($_COOKIE['viewed_cids']) ? json_decode($_COOKIE['viewed_cids'], true) : [];
+    if (!is_array($viewed_cids)) {
+        $viewed_cids = [];
+    }
+
+    if (!in_array($cid, $viewed_cids)) {
+        if ($row) {
+            // 字段存在，更新
+            $views = $row['int_value'] + 1;
+            $db->query($db->update('table.fields')->rows(['int_value' => $views])->where('cid = ? AND name = ?', $cid, 'views'));
+        } else {
+            // 字段不存在，插入
+            $views = 1;
+            $db->query($db->insert('table.fields')->rows([
+                'cid' => $cid, 
+                'name' => 'views', 
+                'type' => 'int', 
+                'str_value' => null, 
+                'int_value' => 1, 
+                'float_value' => 0
+            ]));
+        }
+        // 将当前文章ID存入cookie
+        $viewed_cids[] = $cid;
+        setcookie('viewed_cids', json_encode($viewed_cids), time() + 3600 * 24, '/'); // cookie有效期24小时
+    } else {
+        // 已经看过，直接读取
+        $views = $row ? $row['int_value'] : 0;
+    }
+    
+    echo $views;
+}
+
+/**
  * 主题初始化
  */
 function themeInit($archive) {

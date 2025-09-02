@@ -5,6 +5,7 @@
 <head>
     <meta charset="<?php $this->options->charset(); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="sogou_site_verification" content="zypCQpVIwW" />
     <script>(function(){try{var t=localStorage.getItem('theme')||'light';if(t==='dark'){document.documentElement.classList.add('dark-theme');document.documentElement.setAttribute('data-theme','dark');}else{document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
     <title><?php $this->archiveTitle([
             'category' => _t('分类 %s 下的文章'),
@@ -12,6 +13,25 @@
             'tag'      => _t('标签 %s 下的文章'),
             'author'   => _t('%s 发布的文章')
         ], '', ' - '); ?><?php $this->options->title(); ?></title>
+
+    <?php
+    $description = '';
+    if ($this->is('index')) {
+        $description = $this->options->description;
+    } elseif ($this->is('post') || $this->is('page')) {
+        if ($this->fields->excerpt) {
+            $description = strip_tags($this->markdown($this->fields->excerpt));
+        } else {
+            $description = strip_tags($this->markdown($this->excerpt));
+        }
+        $description = mb_substr($description, 0, 150, 'UTF-8');
+    } elseif ($this->is('category')) {
+        $description = $this->getDescription();
+    }
+    if (!empty($description)) {
+        echo '<meta name="description" content="' . htmlspecialchars($description) . '" />' . "\n";
+    }
+    ?>
 
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/normalize.css'); ?>">
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/core.css'); ?>">
@@ -44,6 +64,22 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "ss3a1su3uz");
 </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9X6VT5G4FZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9X6VT5G4FZ');
+</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PNRHLLB2');</script>
+<!-- End Google Tag Manager -->
     <!-- 字体 -->
     <link rel="preload" href="<?php $this->options->themeUrl('css/fonts.css'); ?>" as="style">
     <link rel="stylesheet" href="<?php $this->options->themeUrl('css/fonts.css'); ?>">
@@ -68,7 +104,7 @@
                         <?php while ($pages->next()): ?>
                             <li><a href="<?php $pages->permalink(); ?>" class="nav-link<?php if ($this->is('page') && $this->slug == $pages->slug): ?> active<?php endif; ?>"><?php $pages->title(); ?></a></li>
                         <?php endwhile; ?>
-                        <!-- 移动端菜单内搜索区域（仅在小屏显示，CSS 控制） -->
+                        <!-- 移动端菜单内搜索区域 -->
                         <li class="nav-search" id="mobileMenuSearch" hidden>
                           <form method="post" action="<?php $this->options->siteUrl(); ?>" role="search" aria-label="站内搜索 (移动菜单)">
                             <input type="text" name="s" class="search-input" placeholder="搜索..." value="<?php if (isset($_POST['s'])) echo htmlspecialchars($_POST['s']); ?>" />
@@ -132,7 +168,7 @@
 
       var targetX = -9999, targetY = -9999;
       var x = targetX, y = targetY;
-      var ease = 0.35; // 越大越跟手（0.25~0.45 建议）
+      var ease = 0.35; // 跟手
       var ticking = false;
       var offset = 4; // 右下偏移 16px
 
@@ -146,7 +182,7 @@
         x += (targetX - x) * ease;
         y += (targetY - y) * ease;
         dot.style.transform = 'translate3d(' + (x - halfSize + offset) + 'px,' + (y - halfSize + offset) + 'px,0)';
-        // 收敛后停止下一帧，节省资源
+        // 收敛后停止下一帧
         if (Math.abs(targetX - x) < 0.5 && Math.abs(targetY - y) < 0.5) { ticking = false; return; }
         requestAnimationFrame(step);
       }
@@ -158,7 +194,7 @@
     </script>
 
     <script>
-    // ================ 顶栏交互重写（精简稳定版） ================
+    // ================ 顶栏交互 ================
     (function(){
       window.__NEW_HEADER_NAV = true; // 新版导航启用标记
       function initHeaderInteractions(){
@@ -201,7 +237,7 @@
         }
         updateMenuIcon();
         document.addEventListener('click',function(e){ if(!isMobile()||!menuOpen) return; if(navMenu&&navMenu.contains(e.target)) return; if(menuBtn&&menuBtn.contains(e.target)) return; if(sidebar&&sidebar.contains(e.target)) return; closeMenu(); });
-        // 菜单内链接点击（锚点平滑滚动 + 自动关闭）
+        // 菜单内链接点击
         navMenu&&navMenu.addEventListener('click',function(e){ var a=e.target.closest('a.nav-link'); if(!a) return; if(isMobile()) closeMenu(); var href=a.getAttribute('href'); if(href && href.charAt(0)==='#'){ var target=document.querySelector(href); if(target){ e.preventDefault(); var y=target.getBoundingClientRect().top + window.pageYOffset - 80; window.scrollTo({top:y,behavior:'smooth'}); } } });
 
         // 抽屉侧栏

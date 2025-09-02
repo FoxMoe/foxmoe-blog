@@ -24,12 +24,26 @@ $categorySlug = trim((string)($this->request->get('cat') ?: $this->request->get(
 $tagSlug      = trim((string)($this->request->get('tg')  ?: $this->request->get('tag')));
 
 // ---------------- 收集所有文章的基本信息（cid、created） ----------------
+
+$db = Typecho_Db::get();
+$prefix = $db->getPrefix();
+$rows = $db->fetchAll(
+  $db->select('cid','created','title','slug','commentsNum')
+     ->from('table.contents')
+     ->where('type = ?', 'post')
+     ->where('status = ?', 'publish')
+     ->where('created < ?', $this->options->time)
+     ->order('created', Typecho_Db::SORT_DESC)
+);
 $postsData = [];
-$this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($allPosts);
-while ($allPosts->next()) {
+
+foreach ($rows as $r) {
   $postsData[] = [
-    'cid' => (int)$allPosts->cid,
-    'created' => (int)$allPosts->created,
+    'cid' => (int)$r['cid'],
+    'created' => (int)$r['created'],
+    'title' => (string)$r['title'],
+    'slug' => (string)$r['slug'],
+    'commentsNum' => (int)$r['commentsNum'],
   ];
 }
 
@@ -201,47 +215,56 @@ function build_query_keep($overrides = [], $removes = []) {
   <?php
   // -------------- 渲染归档列表（分年/月） --------------
   $year = 0; $month = 0;
-  $this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($archives);
-  while ($archives->next()):
-    $cid = (int)$archives->cid;
+  // 直接使用预取的 postsData 遍历 (已按时间倒序)
+  foreach ($postsData as $pRow) {
+    $cid = $pRow['cid'];
     if (!isset($allowedCidSet[$cid])) continue;
-
-    $y = (int)date('Y', $archives->created);
-    $m = (int)date('n', $archives->created);
+    $createdTs = $pRow['created'];
+    $y = (int)date('Y', $createdTs);
+    $m = (int)date('n', $createdTs);
 
     if ($year != $y) {
       if ($year > 0) {
-        if ($month > 0) {
-          echo "</ul>";
-          $month = 0;
-        }
-        echo "</div>";
+        if ($month > 0) { echo "</ul>"; $month = 0; }
+        echo "</div>"; // 结束上一年块
       }
       $year = $y;
       $yc = isset($yearCounts[$year]) ? $yearCounts[$year] : 0;
       echo "<div class=\"archive-year\"><h3 class=\"archive-year-title\">{$year} 年 <span class=\"archive-count\">({$yc} 篇)</span></h3>";
     }
     if ($month != $m) {
-      if ($month > 0) {
-        echo "</ul>";
-      }
+      if ($month > 0) echo "</ul>"; // 结束上个月
       $month = $m;
       $mc = isset($monthCounts[$year][$month]) ? $monthCounts[$year][$month] : 0;
       echo "<h4 class=\"archive-month-title\">{$month} 月 <span class=\"archive-count\">({$mc} 篇)</span></h4><ul class=\"archive-list\">";
     }
-  ?>
-    <li class="archive-item">
-      <span class="archive-date"><?php echo date('m-d', $archives->created); ?></span>
-      <a class="archive-link" href="<?php $archives->permalink(); ?>"><?php $archives->title(); ?></a>
-      <span class="archive-comments">评论(<?php $archives->commentsNum('0', '1', '%d'); ?>)</span>
-    </li>
-  <?php endwhile; ?>
-  <?php
-    if ($year > 0) {
-      if ($month > 0) echo "</ul>";
-      echo "</div>";
-    }
-  ?>
+
+    // 构造文章链接 (使用 Router::url 根据当前路由设置生成); 如果无法生成则回退 #
+    $rowBasic = [
+      'cid' => $cid,
+      'slug' => $pRow['slug'],
+      'created' => $createdTs,
+      'year' => date('Y', $createdTs),
+      'month' => date('m', $createdTs),
+      'day' => date('d', $createdTs),
+    ];
+    $permalink = '#';
+    try {
+      // post 路由名在 Typecho 默认是 'post'
+      $permalink = Typecho_Router::url('post', $rowBasic, $this->options->index);
+    } catch (Exception $e) {}
+
+    echo '<li class="archive-item">'
+       . '<span class="archive-date">' . date('m-d', $createdTs) . '</span>'
+       . '<a class="archive-link" href="' . htmlspecialchars($permalink) . '">' . htmlspecialchars($pRow['title']) . '</a>'
+       . '<span class="archive-comments">评论(' . (int)$pRow['commentsNum'] . ')</span>'
+       . '</li>';
+  }
+  if ($year > 0) {
+    if ($month > 0) echo "</ul>";
+    echo "</div>";
+  }
+?>
 <?php endif; ?>
         </div>
       </section>

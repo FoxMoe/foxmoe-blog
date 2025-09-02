@@ -962,7 +962,7 @@ body { background: var(--admin-bg); color: var(--admin-text); }
 #typecho-nav-list a:hover, #typecho-nav-list a.current { color: var(--admin-primary); }
 /* 表格 & 面板 */
 .typecho-table-wrap, .typecho-list-table td, .typecho-list-table th, .typecho-page-main .typecho-option input.text, .typecho-page-main .typecho-option textarea, #custom-field { border-color: var(--admin-border); }
-.typecho-table-wrap { background: var(--admin-surface); border-radius: var(--admin-radius); box-shadow: var(--admin-shadow-sm); }
+.typecho-table-wrap {border-radius: var(--admin-radius); box-shadow: var(--admin-shadow-sm); }
 .typecho-page-main .typecho-option input.text, .typecho-page-main .typecho-option textarea { background: #fff; border:1px solid var(--admin-border); border-radius: var(--admin-radius-sm); transition: border .2s, box-shadow .2s; }
 .typecho-page-main .typecho-option input.text:focus, .typecho-page-main .typecho-option textarea:focus { border-color: var(--admin-primary); box-shadow:0 0 0 3px rgba(236,72,153,.15); outline:none; }
 /* 按钮 */

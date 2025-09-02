@@ -1,4 +1,3 @@
-// 组件和高级交互功能 - 使用真正的jQuery
 $(document).ready(function() {
     Components.init();
 });
@@ -37,15 +36,22 @@ const Components = {
 
     // 工具提示
     initTooltips() {
+        // 初始化时将所有 title 复制到 data-title，保留 title
         $('[title]').each(function() {
             const $element = $(this);
-            const title = $element.attr('title');
-            $element.removeAttr('title');
+            if (!$element.attr('data-title')) {
+                $element.attr('data-title', $element.attr('title'));
+            }
+            $element.off('.tooltip'); // 防止重复绑定
 
-            $element.on('mouseenter', function(e) {
+            $element.on('mouseenter.tooltip', function(e) {
+                const title = $element.attr('data-title');
+                if (!title) return;
+                // 阻止原生 tooltip
+                this._oldTitle = $element.attr('title');
+                $element.attr('title', '');
                 const $tooltip = $('<div class="tooltip"></div>').text(title);
                 $('body').append($tooltip);
-
                 const rect = this.getBoundingClientRect();
                 $tooltip.css({
                     position: 'fixed',
@@ -55,7 +61,12 @@ const Components = {
                 }).fadeIn(200);
             });
 
-            $element.on('mouseleave', function() {
+            $element.on('mouseleave.tooltip', function() {
+                // 离开时恢复 title
+                if (typeof this._oldTitle !== 'undefined') {
+                    $element.attr('title', this._oldTitle);
+                    delete this._oldTitle;
+                }
                 $('.tooltip').fadeOut(200, function() {
                     $(this).remove();
                 });
@@ -363,4 +374,11 @@ const Accessibility = {
 $(function() {
     Performance.init();
     Accessibility.init();
+});
+
+// 页面跳转前移除所有 tooltip，防止残留
+$(document).on('click', 'a', function() {
+    if ($('.tooltip').length) {
+        $('.tooltip').remove();
+    }
 });

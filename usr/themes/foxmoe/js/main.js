@@ -11,6 +11,53 @@ const App = {
         this.initScrollEffects();
         this.initRuntimeCounter();
         this.initPjax();
+        this.initMarkdown();
+        this.initCardClick();
+    },
+
+    initHightight(){
+        console.log("highlight");
+        if (typeof Prism !== 'undefined') {
+var pres = document.getElementsByTagName('pre');
+                for (var i = 0; i < pres.length; i++){
+                    if (pres[i].getElementsByTagName('code').length > 0)
+                        pres[i].className  = 'line-numbers';}
+Prism.highlightAll(true,null);}
+    },
+
+    initMarkdown() {
+        // const renderMarkdown = () => {
+        //     if (typeof editormd !== "undefined" && document.getElementById("content")) {
+        //         editormd.markdownToHTML("content", {
+        //             htmlDecode: "style,script,iframe",
+        //             emoji: true,
+        //             taskList: true,
+        //             tex: true,
+        //             flowChart: true,
+        //             sequenceDiagram: true,
+        //         });
+        //     }
+        // };
+        // renderMarkdown();
+        // $(document).on('pjax:complete', renderMarkdown);
+    },
+
+    initCardClick() {
+        const handleCardClick = (e) => {
+            const card = e.target.closest('.post-card');
+            if (!card || e.target.closest('a')) return;
+            
+            const url = card.getAttribute('data-url');
+            if (url) {
+                if (window.Pjax) {
+                    new Pjax().handleLink(card.querySelector('.post-title-link'));
+                } else {
+                    window.location.href = url;
+                }
+            }
+        };
+
+        $(document).off('click.cardClick').on('click.cardClick', '.post-card', handleCardClick);
     },
 
     initNavigation() {
@@ -20,7 +67,7 @@ const App = {
         const $navLinks = $('.nav-link');
         let lastScrollTop = 0;
         let ticking = false;
-        const skipLegacyMenu = !!window.__NEW_HEADER_NAV; // 新版导航存在则跳过旧菜单逻辑
+        const skipLegacyMenu = !!window.__NEW_HEADER_NAV; // 新版导航
 
         const updateHeader = () => {
             const scrollTop = $(window).scrollTop();
@@ -86,11 +133,10 @@ const App = {
         const savedTheme = localStorage.getItem('theme') || 'light';
         const savedFontSize = localStorage.getItem('fontSize') || 'normal';
 
-        // 首先应用保存的主题
+        // 应用保存的主题
         this.setTheme(savedTheme);
         this.setFontSize(savedFontSize);
 
-        // 使用事件委托来确保按钮点击始终有效
         $(document).off('click.themeToggle').on('click.themeToggle', '.theme-toggle', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -102,7 +148,7 @@ const App = {
             localStorage.setItem('theme', newTheme);
         });
 
-        // 字体大小切换也使用事件委托
+        // 字体大小切换
         let fontSizeIndex = ['small', 'normal', 'large'].indexOf(savedFontSize);
         const fontSizes = ['small', 'normal', 'large'];
 
@@ -117,14 +163,13 @@ const App = {
     },
 
     initPjax() {
-        // 确保加载条存在（复用现有样式 .page-loading-bar）
+        // 加载条
         let $loadingBar = $('.page-loading-bar');
         if ($loadingBar.length === 0) {
             $loadingBar = $('<div class="page-loading-bar"></div>');
             $('body').append($loadingBar);
         }
 
-        // 首次进入时若是归档页，确保样式已加载
         this.ensureArchiveCss();
 
         if (!$.support.pjax) {
@@ -152,11 +197,19 @@ const App = {
             App.updateActiveNav();
             $(window).trigger('scroll');
 
-            // 动态确保归档CSS
+            // 归档CSS
             this.ensureArchiveCss();
 
             // PJAX 后重新初始化运行时计时器
             this.initRuntimeCounter();
+            this.initMarkdown();
+            this.initHightight();
+            this.initCardClick();
+
+            // 重新初始化 tooltip
+            if (window.Components && typeof Components.initTooltips === 'function') {
+                Components.initTooltips();
+            }
 
             $loadingBar.addClass('progress-100');
             setTimeout(() => {
@@ -172,7 +225,6 @@ const App = {
         try {
             // 判断页面是否含有归档容器
             if (document.querySelector('.archive-container')) {
-                // 判断是否已加载
                 var loaded = !!document.querySelector('link[data-archive-css="1"]');
                 if (!loaded) {
                     var href = (window.THEME_URL || '') + 'css/archive.css';
@@ -184,7 +236,6 @@ const App = {
                 }
             }
         } catch (e) {
-            // 忽略
         }
     },
 
@@ -193,7 +244,7 @@ const App = {
         const $body = $('body');
         const $themeIcon = $('.theme-toggle .material-icons');
 
-        // 在切换瞬间加一个短暂的过渡类
+        // 过渡类
         $root.addClass('theme-animating');
         clearTimeout(this._themeAnimatingTimer);
         this._themeAnimatingTimer = setTimeout(() => {
@@ -203,7 +254,7 @@ const App = {
         $root.removeClass('light-theme dark-theme');
         $body.removeClass('light-theme dark-theme');
 
-        // 使用 data-theme 供 CSS 变量选择器 [data-theme="dark"] 使用
+        // data-theme
         if (theme === 'dark') {
             $root.addClass('dark-theme');
             $body.addClass('dark-theme');
@@ -212,7 +263,7 @@ const App = {
             $root.attr('data-theme', 'light');
         }
 
-        // 更新图标（异步避免抖动）
+        // 更新图标
         setTimeout(() => {
             if ($themeIcon.length) {
                 $themeIcon.text(theme === 'light' ? 'dark_mode' : 'light_mode');
@@ -330,7 +381,6 @@ const App = {
     },
 
     initRuntimeCounter() {
-        // 从页面 <body data-runtime-start="YYYY-MM-DD HH:MM:SS"> 读取
         const attr = (document.body && document.body.getAttribute('data-runtime-start')) || '';
         const parsed = this.parseRuntimeStart(attr);
         const startDate = parsed || new Date('2025-01-01T00:00:00');
@@ -338,7 +388,7 @@ const App = {
 
         const updateRuntime = () => {
             const el = document.getElementById('runtime');
-            if (!el) return; // 页面无该元素时跳过
+            if (!el) return;
             const now = new Date();
             const diff = now - this._runtimeStart;
             if (isNaN(diff) || diff < 0) { el.textContent = '--'; return; }
@@ -360,7 +410,6 @@ const App = {
     parseRuntimeStart(str) {
         if (!str || typeof str !== 'string') return null;
         const s = str.trim();
-        // 支持三种：仅日期、到分钟、到秒；分隔符支持空格或 T
         const m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?$/);
         if (!m) return null;
         const y = parseInt(m[1], 10);

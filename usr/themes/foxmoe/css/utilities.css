@@ -29,7 +29,7 @@
 .category-item:hover .category-count, .category-hover .category-count { background: var(--primary-100) !important; color: var(--primary-600) !important; }
 .dark-theme .category-item:hover .category-count, .dark-theme .category-hover .category-count { background: var(--primary-200) !important; color: var(--primary-800) !important; }
 
-/* 链接统一配色与过渡（按需覆盖） */
+/* 链接统一配色与过渡 */
 .tags-list a,
 .category-link,
 .category-link .category-name,
@@ -71,7 +71,7 @@ a[href$="#comments"]:hover {
 .dark-theme .post-excerpt { color: var(--text-secondary) !important; }
 .dark-theme .post-meta { color: var(--text-secondary) !important; }
 
-/* 常见交互元素统一过渡，手感更顺滑 */
+/* 常见交互元素统一过渡 */
 .post-card,
 .recommend-item,
 .category-link,

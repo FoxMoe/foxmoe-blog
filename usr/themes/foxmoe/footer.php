@@ -15,19 +15,19 @@
                 <div class="link-group">
                     <h4>快速导航</h4>
                     <ul>
-                        <li><a href="#home">首页</a></li>
-                        <li><a href="#posts">文章</a></li>
-                        <li><a href="#categories">分类</a></li>
-                        <li><a href="#about">关于</a></li>
+                        <li><a href="<?php $this->options->siteUrl(); ?>">首页</a></li>
+                        <li><a href="<?php $this->options->siteUrl(); ?>/archives.html">归档</a></li>
+                        <li><a href="<?php $this->options->siteUrl(); ?>/console">控制台</a></li>
+                        <li><a href="<?php $this->options->siteUrl(); ?>/about.html">关于</a></li>
                     </ul>
                 </div>
                 <div class="link-group">
-                    <h4>友情链接</h4>
+                    <h4>快速链接</h4>
                     <ul>
-                        <li><a href="https://www.pixiv.net" target="_blank">Pixiv</a></li>
-                        <li><a href="https://www.bilibili.com" target="_blank">哔哩哔哩</a></li>
-                        <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                        <li><a href="https://www.bangumi.tv" target="_blank">Bangumi</a></li>
+                        <li><a href="https://pan.foxmoe.top" target="_blank">灯狐苑网盘</a></li>
+                        <li><a href="https://img.foxmoe.top" target="_blank">灯狐苑图床</a></li>
+                        <li><a href="/rss.xml">RSS</a></li>
+                        <li><a href="/sitemap.xml">网站地图</a></li>
                     </ul>
                 </div>
                 <div class="link-group">
@@ -36,7 +36,6 @@
                         <li><a href="https://github.com/foxmoe" target="_blank">GitHub</a></li>
                         <li><a href="https://space.bilibili.com/150209133" target="_blank">Bilibili</a></li>
                         <li><a href="mailto:dream.qu@qq.com">Email</a></li>
-                        <li><a href="/rss.xml">RSS</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,9 +44,13 @@
     <div class="footer-bottom">
         <div class="footer-info">
             <p>&copy; <?php echo date('Y'); ?> <?php $this->options->title(); ?>. All rights reserved.</p>
-            <p>Foxmoe Blog Engine 1.1 Based on <a href="https://typecho.org" target="_blank">Typecho</a></p>
+            <p><a href="https://github.com/FoxMoe/foxmoe-blog" target=="_blank">Foxmoe Blog Engine 1.2</a> Based on <a href="https://typecho.org" target="_blank">Typecho</a></p>
             <p>网站运行时间: <span id="runtime">0天0小时0分钟</span></p>
             <!-- <p>ICP备案号: <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备XXXXXXXX号</a></p> -->
+             <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNRHLLB2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
         </div>
     </div>
 </footer>
@@ -67,6 +70,7 @@
         </button>
     </div>
 </div>
+
 <?php $this->footer(); ?>
 <script src="<?php $this->options->themeUrl('js/jquery-3.7.1.min.js'); ?>" defer></script>
 <script src="<?php $this->options->themeUrl('js/jquery.pjax.min.js'); ?>" defer></script>

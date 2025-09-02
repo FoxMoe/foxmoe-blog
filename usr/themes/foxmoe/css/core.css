@@ -4,10 +4,10 @@
 
 :root {
   /* 浅色主题配色 */
-  --light-bg: #ffffff;
+  --light-bg: #f9f1f6;
   --light-surface: #fafafa;
   --light-card: #ffffff;
-  --light-card-glass: rgba(255, 255, 255, 0.1);
+  --light-card-glass: rgba(255, 255, 255, 0.9);
   --light-text-primary: #2d3748;
   --light-text-secondary: #718096;
   --light-border: #e2e8f0;
@@ -19,12 +19,12 @@
   --dark-bg: #1a1a1a;
   --dark-surface: #242424;
   --dark-card: #2d2d2d;
-  --light-card-glass: rgba(0, 0, 0, 0.1);
+  --dark-card-glass: rgba(45, 45, 45, 0.9);
   --dark-text-primary: #ffffff;
   --dark-text-secondary: #a0a0a0;
   --dark-border: #404040;
   --dark-shadow: rgba(0, 0, 0, 0.3);
-    --dark-cursor-pointer: url("../custom/light_hand.cur"),pointer;
+  --dark-cursor-pointer: url("../custom/light_hand.cur"),pointer;
   --dark-cursor-default: url("../custom/light_arrow.cur"),default;
 
   /* 主色调 - 粉红色系 */

@@ -7,7 +7,7 @@
             <article class="post-detail<?php if ($this->fields->thumbnail) echo ' has-hero'; ?>" itemscope itemtype="http://schema.org/BlogPosting">
                 <?php if ($this->fields->thumbnail): ?>
                 <div class="post-hero post-image">
-                    <?php $prefix = foxmoe_opt('githubImageProxy', 'https://get.2sb.org/'); ?>
+                    <?php $prefix = foxmoe_opt('githubImageProxy', ''); ?>
                     <img src="<?php echo $prefix . ltrim($this->fields->thumbnail, '/'); ?>" alt="<?php $this->title(); ?>" class="post-img">
                     <div class="post-category"><?php $this->category(',', false); ?></div>
                 </div>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="meta-item">
                             <span class="material-icons">visibility</span>
-                            <span><?php get_post_view($this); ?> 次阅读</span>
+                            <span><?php get_and_update_post_view($this); ?> 次阅读</span>
                         </div>
                         <div class="meta-item">
                             <span class="material-icons">comment</span>
@@ -47,7 +47,7 @@
                 </header>
 
                 <!-- 文章内容 -->
-                <div class="post-content" itemprop="articleBody">
+                <div id="content" class="post-content" itemprop="articleBody">
                     <?php $this->content(); ?>
                 </div>
 

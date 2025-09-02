@@ -1,7 +1,4 @@
-/* 本地字体加载：减少外部请求，提升中国大陆环境加载速度 */
-/* 注意：请将对应的 .woff2 文件放到 ../fonts/ 目录，文件名与下方 src 一致 */
 
-/* 仅拉丁字符子集，体积小；中文使用系统自带无衬线字体 */
 @font-face {
   font-family: 'Inter Local';
   font-style: normal;
@@ -20,7 +17,7 @@
   src: url('../fonts/MaterialIcons-Regular.woff2') format('woff2');
 }
 
-/* 确保图标类仍可用 */
+/* 图标类 */
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -38,7 +35,6 @@
   font-feature-settings: 'liga';
 }
 
-/* 将变量字体用于拉丁字形，中文仍走系统字体，避免大体积中文 webfont */
 :root {
   --font-sans: 'Inter Local', 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
